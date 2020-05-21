@@ -1,8 +1,9 @@
-package com.example.wardrobeassistant;
+package com.example.wardrobeassistant.activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
 
+import com.example.wardrobeassistant.R;
 import com.qmuiteam.qmui.arch.QMUIActivity;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 
