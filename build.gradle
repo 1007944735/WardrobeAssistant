@@ -16,6 +16,10 @@ buildscript {
 
 allprojects {
     repositories {
+        maven { url 'https://maven.aliyun.com/repository/public/' }
+        maven{ url'http://maven.aliyun.com/nexus/content/repositories/jcenter'}
+        mavenLocal()
+        mavenCentral()
         google()
         jcenter()
         
