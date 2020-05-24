@@ -3,6 +3,14 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="QMUI.Compat.NoActionBar">
         <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="QMUITopBarStyle">@style/MyTopBarStyle</item>
+    </style>
+
+    <style name="MyTopBarStyle" parent="QMUI.TopBar">
+        <item name="android:height">50dp</item>
     </style>
 
 </resources>
