@@ -10,7 +10,8 @@
     </style>
 
     <style name="MyTopBarStyle" parent="QMUI.TopBar">
-        <item name="android:height">50dp</item>
+        <item name="android:background">#ffffff</item>
+        <item name="qmui_topbar_left_back_drawable_id">@mipmap/ico_left_back</item>
     </style>
 
 </resources>

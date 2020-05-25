@@ -3,18 +3,10 @@ package com.example.wardrobeassistant.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
 
-import com.example.wardrobeassistant.Constant;
 import com.example.wardrobeassistant.R;
-import com.example.wardrobeassistant.db.DbManager;
-import com.example.wardrobeassistant.db.entity.Clothing;
-import com.qmuiteam.qmui.arch.QMUIActivity;
-import com.qmuiteam.qmui.widget.QMUITopBar;
-
-import java.util.List;
 
 public class MainActivity extends BaseActivity {
     private CardView cvMyClothing;

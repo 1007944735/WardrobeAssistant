@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">WardrobeAssistant</string>
+
+    <string-array name="clothingClassify">
+        <item>外套</item>
+        <item>上衣</item>
+        <item>裤子</item>
+        <item>鞋子</item>
+    </string-array>
 </resources>
