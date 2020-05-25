@@ -1,5 +1,6 @@
 package com.example.wardrobeassistant.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -12,8 +13,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.wardrobeassistant.R;
 import com.example.wardrobeassistant.adapter.ClothingClassifyAdapter;
 import com.example.wardrobeassistant.adapter.ClothingClassifyDetailsAdapter;
+import com.example.wardrobeassistant.db.entity.Clothing;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.pullLayout.QMUIPullLayout;
+
+import java.util.Arrays;
 
 public class MyClothingListActivity extends BaseActivity {
     private QMUITopBarLayout topBar;
@@ -48,6 +52,12 @@ public class MyClothingListActivity extends BaseActivity {
                 finish();
             }
         });
+        topBar.addRightImageButton(R.mipmap.ico_clothing_shoes, R.id.clothing_add).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MyClothingListActivity.this, ClothingAddActivity.class));
+            }
+        });
     }
 
     private void initClassifyList() {
@@ -64,7 +74,12 @@ public class MyClothingListActivity extends BaseActivity {
         });
 
         classifyDetailsList.setLayoutManager(new GridLayoutManager(this, 2));
+        mClassifyDetailsAdapter = new ClothingClassifyDetailsAdapter(this);
+        classifyDetailsList.setAdapter(mClassifyDetailsAdapter);
 
+        mClassifyDetailsAdapter.addALl(
+                Arrays.asList(new Clothing(), new Clothing(), new Clothing(), new Clothing(), new Clothing(), new Clothing(), new Clothing())
+        );
 
     }
 

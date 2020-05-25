@@ -24,16 +24,19 @@ public class Clothing {
     private String clothingWarmthLevel;
     //位置
     private String clothingLocation;
+    //图片位置
+    private String clothingImageUrl;
     //放入时间
     private Long clothingInputTime;
     //位置变更时间
     private Long clothingLocationChangeTime;
 
-    @Generated(hash = 583858491)
+    @Generated(hash = 371178668)
     public Clothing(Long id, String clothingName, String clothingColorSystem,
-                    String clothingType, String clothingOccasion,
-                    String clothingWarmthLevel, String clothingLocation,
-                    Long clothingInputTime, Long clothingLocationChangeTime) {
+            String clothingType, String clothingOccasion,
+            String clothingWarmthLevel, String clothingLocation,
+            String clothingImageUrl, Long clothingInputTime,
+            Long clothingLocationChangeTime) {
         this.id = id;
         this.clothingName = clothingName;
         this.clothingColorSystem = clothingColorSystem;
@@ -41,6 +44,7 @@ public class Clothing {
         this.clothingOccasion = clothingOccasion;
         this.clothingWarmthLevel = clothingWarmthLevel;
         this.clothingLocation = clothingLocation;
+        this.clothingImageUrl = clothingImageUrl;
         this.clothingInputTime = clothingInputTime;
         this.clothingLocationChangeTime = clothingLocationChangeTime;
     }
@@ -121,6 +125,14 @@ public class Clothing {
         this.clothingLocationChangeTime = clothingLocationChangeTime;
     }
 
+    public String getClothingImageUrl() {
+        return this.clothingImageUrl;
+    }
+
+    public void setClothingImageUrl(String clothingImageUrl) {
+        this.clothingImageUrl = clothingImageUrl;
+    }
+
     @Override
     public String toString() {
         return "Clothing{" +
@@ -131,6 +143,7 @@ public class Clothing {
                 ", clothingOccasion='" + clothingOccasion + '\'' +
                 ", clothingWarmthLevel='" + clothingWarmthLevel + '\'' +
                 ", clothingLocation='" + clothingLocation + '\'' +
+                ", clothingImageUrl='" + clothingImageUrl + '\'' +
                 ", clothingInputTime=" + clothingInputTime +
                 ", clothingLocationChangeTime=" + clothingLocationChangeTime +
                 '}';

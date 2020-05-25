@@ -12,15 +12,16 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="android.notch_support"
-            android:value="true"/>
+            android:value="true" />
 
         <meta-data
             android:name="android.max_aspect"
-            android:value="2.34"/>
+            android:value="2.34" />
 
         <meta-data
             android:name="notch.config"
-            android:value="portrait|landscape"/>
+            android:value="portrait|landscape" />
+
         <activity
             android:name=".activity.MainActivity"
             android:screenOrientation="portrait">
@@ -32,6 +33,9 @@
         </activity>
         <activity
             android:name=".activity.MyClothingListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ClothingAddActivity"
             android:screenOrientation="portrait" />
     </application>
 
