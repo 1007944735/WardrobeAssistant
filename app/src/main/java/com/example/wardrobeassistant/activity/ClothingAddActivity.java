@@ -11,14 +11,19 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 import com.example.wardrobeassistant.R;
+import com.example.wardrobeassistant.db.DbManager;
+import com.example.wardrobeassistant.db.entity.Clothing;
+import com.example.wardrobeassistant.util.StringUtils;
 import com.jph.takephoto.app.TakePhoto;
 import com.jph.takephoto.app.TakePhotoImpl;
+import com.jph.takephoto.model.CropOptions;
 import com.jph.takephoto.model.InvokeParam;
 import com.jph.takephoto.model.TContextWrap;
 import com.jph.takephoto.model.TResult;
@@ -49,11 +54,14 @@ public class ClothingAddActivity extends BaseActivity implements TakePhoto.TakeR
     private TakePhoto takePhoto;
     private InvokeParam invokeParam;
 
+    private Clothing clothing;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getTakePhoto().onCreate(savedInstanceState);
         setContentView(R.layout.activity_clothing_add);
+        clothing = new Clothing();
         initView();
         initTopBar();
         initListener();
@@ -105,7 +113,59 @@ public class ClothingAddActivity extends BaseActivity implements TakePhoto.TakeR
         topBar.addRightTextButton("完成", R.id.clothing_add_finish).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String name = etClothingName.getText().toString();
+                String colorSystem = tvClothingColorSystem.getText().toString();
+                String type = tvClothingType.getText().toString();
+                String occasion = tvClothingOccasion.getText().toString();
+                String warmthLevel = tvClothingWarmthLevel.getText().toString();
+                String location = etClothingLocation.getText().toString();
 
+                if (name.isEmpty()) {
+                    Toast.makeText(ClothingAddActivity.this, "请输入服装名称", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (colorSystem.isEmpty()) {
+                    Toast.makeText(ClothingAddActivity.this, "请选择服装色系", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (type.isEmpty()) {
+                    Toast.makeText(ClothingAddActivity.this, "请选择服装类型", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (occasion.isEmpty()) {
+                    Toast.makeText(ClothingAddActivity.this, "请选择穿着场合", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (warmthLevel.isEmpty()) {
+                    Toast.makeText(ClothingAddActivity.this, "请选择保暖等级", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (location.isEmpty()) {
+                    Toast.makeText(ClothingAddActivity.this, "请输入存放位置", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (clothing.getClothingImageUrl().isEmpty()) {
+                    Toast.makeText(ClothingAddActivity.this, "请添加存放图片", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                clothing.setClothingName(name);
+                clothing.setClothingColorSystem(StringUtils.colorSystemToDb(colorSystem));
+                clothing.setClothingType(StringUtils.clothingTypeToDb(type));
+                clothing.setClothingOccasion(StringUtils.occasionToDb(occasion));
+                clothing.setClothingWarmthLevel(StringUtils.warmLevelToDb(warmthLevel));
+                clothing.setClothingLocation(location);
+                long timeMillis = System.currentTimeMillis();
+                clothing.setClothingInputTime(timeMillis);
+                clothing.setClothingLocationChangeTime(timeMillis);
+
+                long id = DbManager.getInstance().getSession().getClothingDao().insert(clothing);
+                if (id > 0) {
+                    setResult(-1);
+                    finish();
+                } else {
+                    Toast.makeText(ClothingAddActivity.this, "添加失败", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -180,6 +240,9 @@ public class ClothingAddActivity extends BaseActivity implements TakePhoto.TakeR
                             if (!file.getParentFile().exists()) {
                                 file.getParentFile().mkdirs();
                             }
+//                            CropOptions options = new CropOptions.Builder().setAspectX(1).setAspectY(1).setWithOwnCrop(true).create();
+//                            getTakePhoto().onPickFromCaptureWithCrop(Uri.fromFile(file), options);
+                            //框架裁剪有问题，暂时不用
                             getTakePhoto().onPickFromCapture(Uri.fromFile(file));
                         }
                         dialog.dismiss();
@@ -203,6 +266,8 @@ public class ClothingAddActivity extends BaseActivity implements TakePhoto.TakeR
     @Override
     public void takeSuccess(TResult result) {
         Log.d("TAG", "takeSuccess: " + result.getImage().getOriginalPath());
+        Glide.with(this).load(result.getImage().getOriginalPath()).into(ivClothingImage);
+        clothing.setClothingImageUrl(result.getImage().getOriginalPath());
     }
 
     @Override

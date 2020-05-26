@@ -10,22 +10,29 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.wardrobeassistant.Constant;
 import com.example.wardrobeassistant.R;
 import com.example.wardrobeassistant.adapter.ClothingClassifyAdapter;
 import com.example.wardrobeassistant.adapter.ClothingClassifyDetailsAdapter;
+import com.example.wardrobeassistant.db.ClothingDao;
+import com.example.wardrobeassistant.db.DbManager;
 import com.example.wardrobeassistant.db.entity.Clothing;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.pullLayout.QMUIPullLayout;
 
 import java.util.Arrays;
+import java.util.List;
 
-public class MyClothingListActivity extends BaseActivity{
+public class MyClothingListActivity extends BaseActivity implements ClothingClassifyAdapter.OnItemClickListener {
     private QMUITopBarLayout topBar;
     private RecyclerView classifyList;
     private QMUIPullLayout pullLayout;
     private ClothingClassifyAdapter mClassifyAdapter;
     private RecyclerView classifyDetailsList;
     private ClothingClassifyDetailsAdapter mClassifyDetailsAdapter;
+    private String classifyType = Constant.TYPE_OVERCOAT;
+
+    private static final int CLOTHING_ADD_REQUEST = 1000;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,6 +42,7 @@ public class MyClothingListActivity extends BaseActivity{
         initTopBar();
         initClassifyList();
         initClassifyDetailsList();
+        loadData();
     }
 
     private void initView() {
@@ -55,7 +63,7 @@ public class MyClothingListActivity extends BaseActivity{
         topBar.addRightTextButton("添加", R.id.clothing_add).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MyClothingListActivity.this, ClothingAddActivity.class));
+                startActivityForResult(new Intent(MyClothingListActivity.this, ClothingAddActivity.class), CLOTHING_ADD_REQUEST);
             }
         });
     }
@@ -63,6 +71,7 @@ public class MyClothingListActivity extends BaseActivity{
     private void initClassifyList() {
         mClassifyAdapter = new ClothingClassifyAdapter(this);
         classifyList.setLayoutManager(new LinearLayoutManager(this));
+        mClassifyAdapter.setOnItemClickListener(this);
         classifyList.setAdapter(mClassifyAdapter);
     }
 
@@ -76,11 +85,6 @@ public class MyClothingListActivity extends BaseActivity{
         classifyDetailsList.setLayoutManager(new GridLayoutManager(this, 2));
         mClassifyDetailsAdapter = new ClothingClassifyDetailsAdapter(this);
         classifyDetailsList.setAdapter(mClassifyDetailsAdapter);
-
-        mClassifyDetailsAdapter.addALl(
-                Arrays.asList(new Clothing(), new Clothing(), new Clothing(), new Clothing(), new Clothing(), new Clothing(), new Clothing())
-        );
-
     }
 
     private void onRefreshData(QMUIPullLayout.PullAction pullAction) {
@@ -101,4 +105,23 @@ public class MyClothingListActivity extends BaseActivity{
 //        mPullLayout.finishActionRun(pullAction);
     }
 
+    private void loadData() {
+        List<Clothing> clothing = DbManager.getInstance().getSession().getClothingDao().queryBuilder().where(ClothingDao.Properties.ClothingType.eq(classifyType)).list();
+        mClassifyDetailsAdapter.clear();
+        mClassifyDetailsAdapter.addALl(clothing);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CLOTHING_ADD_REQUEST && resultCode == -1) {
+            loadData();
+        }
+    }
+
+    @Override
+    public void onItemClick(String classifyType) {
+        this.classifyType = classifyType;
+        loadData();
+    }
 }

@@ -3,7 +3,7 @@ apply plugin: 'org.greenrobot.greendao'
 android {
     signingConfigs {
         debug {
-            storeFile file('E:\\MyProject\\WardrobeAssistant\\wa.jks')
+            storeFile file('../wa.jks')
             storePassword '123456'
             keyAlias = 'key0'
             keyPassword '123456'

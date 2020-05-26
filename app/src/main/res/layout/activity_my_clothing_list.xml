@@ -37,6 +37,7 @@
             <com.qmuiteam.qmui.widget.pullLayout.QMUIPullRefreshView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 app:qmui_action_view_init_offset="-20dp"
                 app:qmui_can_over_pull="true"
                 app:qmui_need_receive_fling_from_target_view="false"
@@ -47,6 +48,7 @@
             <com.qmuiteam.qmui.widget.pullLayout.QMUIPullLoadMoreView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 app:qmui_action_view_init_offset="0dp"
                 app:qmui_can_over_pull="true"
                 app:qmui_need_receive_fling_from_target_view="true"
