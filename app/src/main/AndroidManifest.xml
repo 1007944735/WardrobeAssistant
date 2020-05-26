@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.wardrobeassistant">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -33,7 +36,10 @@
         </activity>
         <activity
             android:name=".activity.MyClothingListActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".activity.SocketConfigActivity" />
+
         <activity
             android:name=".activity.ClothingAddActivity"
             android:screenOrientation="portrait" />

@@ -34,12 +34,28 @@
                     android:layout_below="@+id/tv_title"
                     android:text="已连接" />
 
-                <TextView
+                <com.qmuiteam.qmui.layout.QMUILinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:orientation="vertical"
                     android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:text="天气" />
+                    android:layout_centerVertical="true">
+
+                    <TextView
+                        android:id="@+id/weatherTemTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="39°C"
+                        android:textSize="25sp"/>
+                    <TextView
+                        android:id="@+id/weatherTipTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="小雨|空气良"
+                        android:textSize="13sp"/>
+
+                </com.qmuiteam.qmui.layout.QMUILinearLayout>
+
             </RelativeLayout>
 
             <LinearLayout
