@@ -7,4 +7,21 @@
         <item>裤子</item>
         <item>鞋子</item>
     </string-array>
+
+    <string-array name="clothingColorSystem">
+        <item>冷色系</item>
+        <item>暖色系</item>
+    </string-array>
+
+    <string-array name="clothingOccasion">
+        <item>日常</item>
+        <item>工作</item>
+        <item>运动</item>
+    </string-array>
+
+    <string-array name="clothingWarmthLevel">
+        <item>春秋</item>
+        <item>夏</item>
+        <item>冬</item>
+    </string-array>
 </resources>

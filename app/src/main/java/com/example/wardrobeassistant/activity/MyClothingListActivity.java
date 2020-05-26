@@ -19,7 +19,7 @@ import com.qmuiteam.qmui.widget.pullLayout.QMUIPullLayout;
 
 import java.util.Arrays;
 
-public class MyClothingListActivity extends BaseActivity {
+public class MyClothingListActivity extends BaseActivity{
     private QMUITopBarLayout topBar;
     private RecyclerView classifyList;
     private QMUIPullLayout pullLayout;
@@ -52,7 +52,7 @@ public class MyClothingListActivity extends BaseActivity {
                 finish();
             }
         });
-        topBar.addRightImageButton(R.mipmap.ico_clothing_shoes, R.id.clothing_add).setOnClickListener(new View.OnClickListener() {
+        topBar.addRightTextButton("添加", R.id.clothing_add).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MyClothingListActivity.this, ClothingAddActivity.class));
@@ -100,4 +100,5 @@ public class MyClothingListActivity extends BaseActivity {
 //        }
 //        mPullLayout.finishActionRun(pullAction);
     }
+
 }

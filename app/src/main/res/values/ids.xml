@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="clothing_add" type="id" />
+    <item name="clothing_add_finish" type="id" />
 </resources>
