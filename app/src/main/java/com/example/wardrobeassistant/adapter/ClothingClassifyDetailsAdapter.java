@@ -49,7 +49,7 @@ public class ClothingClassifyDetailsAdapter extends RecyclerView.Adapter<Clothin
     @Override
     public void onBindViewHolder(@NonNull ClothingClassifyDetailViewHolder holder, int position) {
         Clothing clothing = clothings.get(position);
-        holder.tvClothingName.setText("123");
+        holder.tvClothingName.setText(clothing.getClothingName());
         Glide.with(mContext).load(clothing.getClothingImageUrl()).into(holder.ivClothingImage);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

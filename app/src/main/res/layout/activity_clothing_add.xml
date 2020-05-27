@@ -1,13 +1,260 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.qmuiteam.qmui.widget.QMUIWindowInsetLayout2 xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#ffffff">
 
     <com.qmuiteam.qmui.widget.QMUITopBarLayout
         android:id="@+id/topBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true" />
+
+    <com.qmuiteam.qmui.widget.QMUIWrapContentScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/topBar">
+
+        <com.qmuiteam.qmui.layout.QMUILinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="15dp">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="服装名称"
+                    android:textColor="#cdcdcd"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/et_clothing_name"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="right|center"
+                    android:hint="请输入"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorShadow" />
+
+            <LinearLayout
+                android:id="@+id/ll_color_system"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="服装色系"
+                    android:textColor="#cdcdcd"
+                    android:textSize="16sp" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/tv_clothing_color_system"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="28dp"
+                    android:src="@mipmap/ico_right" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorShadow" />
+
+            <LinearLayout
+                android:id="@+id/ll_type"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="服装类型"
+                    android:textColor="#cdcdcd"
+                    android:textSize="16sp" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/tv_clothing_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="28dp"
+                    android:src="@mipmap/ico_right" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorShadow" />
+
+            <LinearLayout
+                android:id="@+id/ll_occasion"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="穿着场合"
+                    android:textColor="#cdcdcd"
+                    android:textSize="16sp" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/tv_clothing_occasion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="28dp"
+                    android:src="@mipmap/ico_right" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorShadow" />
+
+            <LinearLayout
+                android:id="@+id/ll_warmth_level"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="保暖等级"
+                    android:textColor="#cdcdcd"
+                    android:textSize="16sp" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/tv_clothing_warmth_level"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="28dp"
+                    android:src="@mipmap/ico_right" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorShadow" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="存放位置"
+                    android:textColor="#cdcdcd"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/et_clothing_location"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="right|center"
+                    android:hint="请输入"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorShadow" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="服装图片"
+                    android:textColor="#cdcdcd"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:id="@+id/iv_clothing_image"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginLeft="20dp"
+                    android:background="#DBDCDE"
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/ico_add_white" />
+            </LinearLayout>
+        </com.qmuiteam.qmui.layout.QMUILinearLayout>
+    </com.qmuiteam.qmui.widget.QMUIWrapContentScrollView>
 
 
 </com.qmuiteam.qmui.widget.QMUIWindowInsetLayout2>
