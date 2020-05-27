@@ -16,9 +16,12 @@ public class MainActivity extends BaseActivity implements GetWeatherTask.GetWeat
     private CardView cvMyClothing;
     private CardView cvSuit;
     private TextView tv_title;
+    private TextView tv_socket_state;
     private TextView weatherTemTv;
     private TextView weatherTipTv;
     private GetWeatherTask weatherTask;
+
+    private boolean socketState = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,7 @@ public class MainActivity extends BaseActivity implements GetWeatherTask.GetWeat
         cvMyClothing = findViewById(R.id.cv_my_clothing);
         cvSuit = findViewById(R.id.cv_suit);
         tv_title = findViewById(R.id.tv_title);
+        tv_socket_state = findViewById(R.id.tv_socket_state);
         weatherTemTv = findViewById(R.id.weatherTemTv);
         weatherTipTv = findViewById(R.id.weatherTipTv);
     }
@@ -51,12 +55,14 @@ public class MainActivity extends BaseActivity implements GetWeatherTask.GetWeat
                 startActivity(new Intent(MainActivity.this,PresetClothingSuitActivity.class));
             }
         });
-        tv_title.setOnClickListener(new View.OnClickListener() {
+
+        tv_socket_state.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this,SocketConfigActivity.class));
             }
         });
+
     }
 
     private void loadWeatherData(){
@@ -69,5 +75,18 @@ public class MainActivity extends BaseActivity implements GetWeatherTask.GetWeat
     public void getWeatherData(String tem, String tip) {
         weatherTemTv.setText(tem);
         weatherTipTv.setText(tip);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //如果是退出状态就是未连接
+        if (MySocket.getInstall().isExits()){
+            socketState = false;
+            tv_socket_state.setText("点击连接");
+        }else {
+            socketState = true;
+            tv_socket_state.setText("已连接");
+        }
     }
 }

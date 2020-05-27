@@ -1,6 +1,7 @@
 package com.example.wardrobeassistant.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -18,9 +19,11 @@ import androidx.annotation.Nullable;
 import com.example.wardrobeassistant.R;
 import com.example.wardrobeassistant.socketmanage.MySocket;
 import com.example.wardrobeassistant.socketmanage.MySocketCallBack;
+import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 
 public class SocketConfigActivity extends BaseActivity {
     private Context mContext;
+    private QMUITopBarLayout topBar;
     private EditText serverHostEt;
     private EditText serverPortEt;
     private Button serverStartBtn;
@@ -117,10 +120,12 @@ public class SocketConfigActivity extends BaseActivity {
         setContentView(R.layout.activity_socketconfig);
         mContext = this;
         initView();
+        initTopBar();
         initListener();
     }
 
     private void initView() {
+        topBar = findViewById(R.id.topBar);
         serverHostEt = findViewById(R.id.serverHostEt);
         serverPortEt = findViewById(R.id.serverPortEt);
         serverStartBtn = findViewById(R.id.serverStartBtn);
@@ -134,6 +139,16 @@ public class SocketConfigActivity extends BaseActivity {
         }else {
             serverStartBtn.setText("断开连接");
         }
+    }
+
+    private void initTopBar() {
+        topBar.setTitle("连接衣橱");
+        topBar.addLeftBackImageButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void initListener() {
