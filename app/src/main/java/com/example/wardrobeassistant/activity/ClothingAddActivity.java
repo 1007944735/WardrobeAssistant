@@ -33,6 +33,7 @@ import com.jph.takephoto.permission.TakePhotoInvocationHandler;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheetBaseBuilder;
+import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 
 import java.io.File;
 
@@ -158,14 +159,25 @@ public class ClothingAddActivity extends BaseActivity implements TakePhoto.TakeR
                 long timeMillis = System.currentTimeMillis();
                 clothing.setClothingInputTime(timeMillis);
                 clothing.setClothingLocationChangeTime(timeMillis);
+                clothing.setIsTakeOut(false);
 
-                long id = DbManager.getInstance().getSession().getClothingDao().insert(clothing);
-                if (id > 0) {
-                    setResult(-1);
-                    finish();
-                } else {
-                    Toast.makeText(ClothingAddActivity.this, "添加失败", Toast.LENGTH_SHORT).show();
-                }
+                final long id = DbManager.getInstance().getSession().getClothingDao().insert(clothing);
+
+                final QMUITipDialog tipDialog = new QMUITipDialog.Builder(ClothingAddActivity.this)
+                        .setIconType(QMUITipDialog.Builder.ICON_TYPE_SUCCESS)
+                        .setTipWord(id > 0 ? "添加成功" : "添加失败")
+                        .create();
+                tipDialog.show();
+                topBar.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        tipDialog.dismiss();
+                        if (id > 0) {
+                            setResult(-1);
+                            finish();
+                        }
+                    }
+                }, 1000);
             }
         });
     }

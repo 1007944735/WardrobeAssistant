@@ -48,6 +48,9 @@
         <activity
             android:name=".activity.ClothingAddActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".activity.ClothingDetailsActivity" />
+        <activity android:name=".activity.PresetClothingSuitActivity" />
+        <activity android:name=".activity.ClothingSuitAddActivity" />
     </application>
 
 </manifest>

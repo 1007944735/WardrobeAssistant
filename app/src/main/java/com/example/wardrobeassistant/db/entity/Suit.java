@@ -1,5 +1,8 @@
 package com.example.wardrobeassistant.db.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.ToOne;
@@ -13,7 +16,7 @@ import com.example.wardrobeassistant.db.SuitDao;
 
 //套装
 @Entity
-public class Suit {
+public class Suit implements Parcelable {
     @Id(autoincrement = true)
     private Long id;
     //名称
@@ -66,6 +69,57 @@ public class Suit {
     @Generated(hash = 1012954962)
     public Suit() {
     }
+
+    protected Suit(Parcel in) {
+        if (in.readByte() == 0) {
+            id = null;
+        } else {
+            id = in.readLong();
+        }
+        suitName = in.readString();
+        if (in.readByte() == 0) {
+            suitOvercoatId = null;
+        } else {
+            suitOvercoatId = in.readLong();
+        }
+        suitOvercoat = in.readParcelable(Clothing.class.getClassLoader());
+        if (in.readByte() == 0) {
+            suitOuterwearId = null;
+        } else {
+            suitOuterwearId = in.readLong();
+        }
+        suitOuterwear = in.readParcelable(Clothing.class.getClassLoader());
+        if (in.readByte() == 0) {
+            suitTrousersId = null;
+        } else {
+            suitTrousersId = in.readLong();
+        }
+        suitTrousers = in.readParcelable(Clothing.class.getClassLoader());
+        if (in.readByte() == 0) {
+            suitShoesId = null;
+        } else {
+            suitShoesId = in.readLong();
+        }
+        suitShoes = in.readParcelable(Clothing.class.getClassLoader());
+        suitPreset = in.readByte() != 0;
+        if (in.readByte() == 0) {
+            suitCreateTime = null;
+        } else {
+            suitCreateTime = in.readLong();
+        }
+    }
+
+    public static final Creator<Suit> CREATOR = new Creator<Suit>() {
+        @Override
+        public Suit createFromParcel(Parcel in) {
+            return new Suit(in);
+        }
+
+        @Override
+        public Suit[] newArray(int size) {
+            return new Suit[size];
+        }
+    };
 
     public Long getId() {
         return this.id;
@@ -340,5 +394,56 @@ public class Suit {
                 ", suitPreset=" + suitPreset +
                 ", suitCreateTime=" + suitCreateTime +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        if (id == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(id);
+        }
+        dest.writeString(suitName);
+        if (suitOvercoatId == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(suitOvercoatId);
+        }
+        dest.writeParcelable(suitOvercoat, flags);
+        if (suitOuterwearId == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(suitOuterwearId);
+        }
+        dest.writeParcelable(suitOuterwear, flags);
+        if (suitTrousersId == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(suitTrousersId);
+        }
+        dest.writeParcelable(suitTrousers, flags);
+        if (suitShoesId == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(suitShoesId);
+        }
+        dest.writeParcelable(suitShoes, flags);
+        dest.writeByte((byte) (suitPreset ? 1 : 0));
+        if (suitCreateTime == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(suitCreateTime);
+        }
     }
 }

@@ -34,6 +34,7 @@ public class ClothingDao extends AbstractDao<Clothing, Long> {
         public final static Property ClothingImageUrl = new Property(7, String.class, "clothingImageUrl", false, "CLOTHING_IMAGE_URL");
         public final static Property ClothingInputTime = new Property(8, Long.class, "clothingInputTime", false, "CLOTHING_INPUT_TIME");
         public final static Property ClothingLocationChangeTime = new Property(9, Long.class, "clothingLocationChangeTime", false, "CLOTHING_LOCATION_CHANGE_TIME");
+        public final static Property IsTakeOut = new Property(10, Boolean.class, "isTakeOut", false, "IS_TAKE_OUT");
     }
 
 
@@ -58,7 +59,8 @@ public class ClothingDao extends AbstractDao<Clothing, Long> {
                 "\"CLOTHING_LOCATION\" TEXT," + // 6: clothingLocation
                 "\"CLOTHING_IMAGE_URL\" TEXT," + // 7: clothingImageUrl
                 "\"CLOTHING_INPUT_TIME\" INTEGER," + // 8: clothingInputTime
-                "\"CLOTHING_LOCATION_CHANGE_TIME\" INTEGER);"); // 9: clothingLocationChangeTime
+                "\"CLOTHING_LOCATION_CHANGE_TIME\" INTEGER," + // 9: clothingLocationChangeTime
+                "\"IS_TAKE_OUT\" INTEGER);"); // 10: isTakeOut
     }
 
     /** Drops the underlying database table. */
@@ -120,6 +122,11 @@ public class ClothingDao extends AbstractDao<Clothing, Long> {
         if (clothingLocationChangeTime != null) {
             stmt.bindLong(10, clothingLocationChangeTime);
         }
+ 
+        Boolean isTakeOut = entity.getIsTakeOut();
+        if (isTakeOut != null) {
+            stmt.bindLong(11, isTakeOut ? 1L: 0L);
+        }
     }
 
     @Override
@@ -175,6 +182,11 @@ public class ClothingDao extends AbstractDao<Clothing, Long> {
         if (clothingLocationChangeTime != null) {
             stmt.bindLong(10, clothingLocationChangeTime);
         }
+ 
+        Boolean isTakeOut = entity.getIsTakeOut();
+        if (isTakeOut != null) {
+            stmt.bindLong(11, isTakeOut ? 1L: 0L);
+        }
     }
 
     @Override
@@ -194,7 +206,8 @@ public class ClothingDao extends AbstractDao<Clothing, Long> {
             cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // clothingLocation
             cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // clothingImageUrl
             cursor.isNull(offset + 8) ? null : cursor.getLong(offset + 8), // clothingInputTime
-            cursor.isNull(offset + 9) ? null : cursor.getLong(offset + 9) // clothingLocationChangeTime
+            cursor.isNull(offset + 9) ? null : cursor.getLong(offset + 9), // clothingLocationChangeTime
+            cursor.isNull(offset + 10) ? null : cursor.getShort(offset + 10) != 0 // isTakeOut
         );
         return entity;
     }
@@ -211,6 +224,7 @@ public class ClothingDao extends AbstractDao<Clothing, Long> {
         entity.setClothingImageUrl(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
         entity.setClothingInputTime(cursor.isNull(offset + 8) ? null : cursor.getLong(offset + 8));
         entity.setClothingLocationChangeTime(cursor.isNull(offset + 9) ? null : cursor.getLong(offset + 9));
+        entity.setIsTakeOut(cursor.isNull(offset + 10) ? null : cursor.getShort(offset + 10) != 0);
      }
     
     @Override

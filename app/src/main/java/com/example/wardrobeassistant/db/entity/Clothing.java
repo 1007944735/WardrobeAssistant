@@ -1,5 +1,8 @@
 package com.example.wardrobeassistant.db.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 
@@ -9,7 +12,7 @@ import org.greenrobot.greendao.annotation.Generated;
 
 //服装
 @Entity
-public class Clothing {
+public class Clothing implements Parcelable {
     @Id(autoincrement = true)
     private Long id;
     //名称
@@ -30,13 +33,15 @@ public class Clothing {
     private Long clothingInputTime;
     //位置变更时间
     private Long clothingLocationChangeTime;
+    //是否取出
+    private Boolean isTakeOut;
 
-    @Generated(hash = 371178668)
+    @Generated(hash = 1121870544)
     public Clothing(Long id, String clothingName, String clothingColorSystem,
             String clothingType, String clothingOccasion,
             String clothingWarmthLevel, String clothingLocation,
             String clothingImageUrl, Long clothingInputTime,
-            Long clothingLocationChangeTime) {
+            Long clothingLocationChangeTime, Boolean isTakeOut) {
         this.id = id;
         this.clothingName = clothingName;
         this.clothingColorSystem = clothingColorSystem;
@@ -47,11 +52,51 @@ public class Clothing {
         this.clothingImageUrl = clothingImageUrl;
         this.clothingInputTime = clothingInputTime;
         this.clothingLocationChangeTime = clothingLocationChangeTime;
+        this.isTakeOut = isTakeOut;
     }
 
     @Generated(hash = 1131756184)
     public Clothing() {
     }
+
+    protected Clothing(Parcel in) {
+        if (in.readByte() == 0) {
+            id = null;
+        } else {
+            id = in.readLong();
+        }
+        clothingName = in.readString();
+        clothingColorSystem = in.readString();
+        clothingType = in.readString();
+        clothingOccasion = in.readString();
+        clothingWarmthLevel = in.readString();
+        clothingLocation = in.readString();
+        clothingImageUrl = in.readString();
+        if (in.readByte() == 0) {
+            clothingInputTime = null;
+        } else {
+            clothingInputTime = in.readLong();
+        }
+        if (in.readByte() == 0) {
+            clothingLocationChangeTime = null;
+        } else {
+            clothingLocationChangeTime = in.readLong();
+        }
+        byte tmpIsTakeOut = in.readByte();
+        isTakeOut = tmpIsTakeOut == 0 ? null : tmpIsTakeOut == 1;
+    }
+
+    public static final Creator<Clothing> CREATOR = new Creator<Clothing>() {
+        @Override
+        public Clothing createFromParcel(Parcel in) {
+            return new Clothing(in);
+        }
+
+        @Override
+        public Clothing[] newArray(int size) {
+            return new Clothing[size];
+        }
+    };
 
     public Long getId() {
         return this.id;
@@ -146,6 +191,50 @@ public class Clothing {
                 ", clothingImageUrl='" + clothingImageUrl + '\'' +
                 ", clothingInputTime=" + clothingInputTime +
                 ", clothingLocationChangeTime=" + clothingLocationChangeTime +
+                ", isTakeUp=" + isTakeOut +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        if (id == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(id);
+        }
+        dest.writeString(clothingName);
+        dest.writeString(clothingColorSystem);
+        dest.writeString(clothingType);
+        dest.writeString(clothingOccasion);
+        dest.writeString(clothingWarmthLevel);
+        dest.writeString(clothingLocation);
+        dest.writeString(clothingImageUrl);
+        if (clothingInputTime == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(clothingInputTime);
+        }
+        if (clothingLocationChangeTime == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(clothingLocationChangeTime);
+        }
+        dest.writeByte((byte) (isTakeOut == null ? 0 : isTakeOut ? 1 : 2));
+    }
+
+    public Boolean getIsTakeOut() {
+        return this.isTakeOut;
+    }
+
+    public void setIsTakeOut(Boolean isTakeOut) {
+        this.isTakeOut = isTakeOut;
     }
 }

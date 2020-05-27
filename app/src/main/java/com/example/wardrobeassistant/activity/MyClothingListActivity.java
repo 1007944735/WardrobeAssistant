@@ -20,7 +20,6 @@ import com.example.wardrobeassistant.db.entity.Clothing;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.pullLayout.QMUIPullLayout;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class MyClothingListActivity extends BaseActivity implements ClothingClassifyAdapter.OnItemClickListener {
@@ -33,6 +32,7 @@ public class MyClothingListActivity extends BaseActivity implements ClothingClas
     private String classifyType = Constant.TYPE_OVERCOAT;
 
     private static final int CLOTHING_ADD_REQUEST = 1000;
+    private static final int CLOTHING_DETAILS_REQUEST = 2000;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -85,6 +85,14 @@ public class MyClothingListActivity extends BaseActivity implements ClothingClas
         classifyDetailsList.setLayoutManager(new GridLayoutManager(this, 2));
         mClassifyDetailsAdapter = new ClothingClassifyDetailsAdapter(this);
         classifyDetailsList.setAdapter(mClassifyDetailsAdapter);
+        mClassifyDetailsAdapter.setOnItemClickListener(new ClothingClassifyDetailsAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Clothing clothing) {
+                Intent intent = new Intent(MyClothingListActivity.this, ClothingDetailsActivity.class);
+                intent.putExtra("clothing", clothing);
+                startActivityForResult(intent, CLOTHING_DETAILS_REQUEST);
+            }
+        });
     }
 
     private void onRefreshData(QMUIPullLayout.PullAction pullAction) {
@@ -108,13 +116,15 @@ public class MyClothingListActivity extends BaseActivity implements ClothingClas
     private void loadData() {
         List<Clothing> clothing = DbManager.getInstance().getSession().getClothingDao().queryBuilder().where(ClothingDao.Properties.ClothingType.eq(classifyType)).list();
         mClassifyDetailsAdapter.clear();
-        mClassifyDetailsAdapter.addALl(clothing);
+        mClassifyDetailsAdapter.addAll(clothing);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CLOTHING_ADD_REQUEST && resultCode == -1) {
+            loadData();
+        } else if (requestCode == CLOTHING_DETAILS_REQUEST && resultCode == -1) {
             loadData();
         }
     }

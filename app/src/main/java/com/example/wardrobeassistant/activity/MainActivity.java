@@ -48,7 +48,7 @@ public class MainActivity extends BaseActivity implements GetWeatherTask.GetWeat
         cvSuit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                startActivity(new Intent(MainActivity.this,PresetClothingSuitActivity.class));
             }
         });
         tv_title.setOnClickListener(new View.OnClickListener() {
