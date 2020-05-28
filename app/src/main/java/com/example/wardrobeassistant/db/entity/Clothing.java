@@ -33,15 +33,18 @@ public class Clothing implements Parcelable {
     private Long clothingInputTime;
     //位置变更时间
     private Long clothingLocationChangeTime;
+    //上次查看时间
+    private Long clothingViewTime;
     //是否取出
     private Boolean isTakeOut;
 
-    @Generated(hash = 1121870544)
+    @Generated(hash = 1630593880)
     public Clothing(Long id, String clothingName, String clothingColorSystem,
             String clothingType, String clothingOccasion,
             String clothingWarmthLevel, String clothingLocation,
             String clothingImageUrl, Long clothingInputTime,
-            Long clothingLocationChangeTime, Boolean isTakeOut) {
+            Long clothingLocationChangeTime, Long clothingViewTime,
+            Boolean isTakeOut) {
         this.id = id;
         this.clothingName = clothingName;
         this.clothingColorSystem = clothingColorSystem;
@@ -52,6 +55,7 @@ public class Clothing implements Parcelable {
         this.clothingImageUrl = clothingImageUrl;
         this.clothingInputTime = clothingInputTime;
         this.clothingLocationChangeTime = clothingLocationChangeTime;
+        this.clothingViewTime = clothingViewTime;
         this.isTakeOut = isTakeOut;
     }
 
@@ -81,6 +85,11 @@ public class Clothing implements Parcelable {
             clothingLocationChangeTime = null;
         } else {
             clothingLocationChangeTime = in.readLong();
+        }
+        if (in.readByte() == 0) {
+            clothingViewTime = null;
+        } else {
+            clothingViewTime = in.readLong();
         }
         byte tmpIsTakeOut = in.readByte();
         isTakeOut = tmpIsTakeOut == 0 ? null : tmpIsTakeOut == 1;
@@ -191,8 +200,17 @@ public class Clothing implements Parcelable {
                 ", clothingImageUrl='" + clothingImageUrl + '\'' +
                 ", clothingInputTime=" + clothingInputTime +
                 ", clothingLocationChangeTime=" + clothingLocationChangeTime +
+                ", clothingViewTime=" + clothingViewTime +
                 ", isTakeUp=" + isTakeOut +
                 '}';
+    }
+
+    public Boolean getIsTakeOut() {
+        return this.isTakeOut;
+    }
+
+    public void setIsTakeOut(Boolean isTakeOut) {
+        this.isTakeOut = isTakeOut;
     }
 
     @Override
@@ -227,14 +245,20 @@ public class Clothing implements Parcelable {
             dest.writeByte((byte) 1);
             dest.writeLong(clothingLocationChangeTime);
         }
+        if (clothingViewTime == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(clothingViewTime);
+        }
         dest.writeByte((byte) (isTakeOut == null ? 0 : isTakeOut ? 1 : 2));
     }
 
-    public Boolean getIsTakeOut() {
-        return this.isTakeOut;
+    public Long getClothingViewTime() {
+        return this.clothingViewTime;
     }
 
-    public void setIsTakeOut(Boolean isTakeOut) {
-        this.isTakeOut = isTakeOut;
+    public void setClothingViewTime(Long clothingViewTime) {
+        this.clothingViewTime = clothingViewTime;
     }
 }

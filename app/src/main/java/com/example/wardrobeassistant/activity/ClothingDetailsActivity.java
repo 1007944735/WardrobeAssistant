@@ -39,6 +39,8 @@ public class ClothingDetailsActivity extends BaseActivity {
         setContentView(R.layout.activity_clothing_details);
         clothing = getIntent().getParcelableExtra("clothing");
         justShow = getIntent().getBooleanExtra("justShow", true);
+        clothing.setClothingViewTime(System.currentTimeMillis());
+        DbManager.getInstance().getSession().getClothingDao().update(clothing);
         initView();
         initTopBar();
         initListener();

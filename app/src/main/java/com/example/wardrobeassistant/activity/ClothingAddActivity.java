@@ -160,6 +160,7 @@ public class ClothingAddActivity extends BaseActivity implements TakePhoto.TakeR
                 clothing.setClothingInputTime(timeMillis);
                 clothing.setClothingLocationChangeTime(timeMillis);
                 clothing.setIsTakeOut(false);
+                clothing.setClothingViewTime(timeMillis);
 
                 final long id = DbManager.getInstance().getSession().getClothingDao().insert(clothing);
 
