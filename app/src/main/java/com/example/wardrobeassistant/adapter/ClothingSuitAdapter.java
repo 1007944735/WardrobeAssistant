@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wardrobeassistant.R;
-import com.example.wardrobeassistant.db.entity.Clothing;
 import com.example.wardrobeassistant.db.entity.Suit;
 import com.example.wardrobeassistant.util.TimeUtils;
 
@@ -49,11 +48,19 @@ public class ClothingSuitAdapter extends RecyclerView.Adapter<ClothingSuitAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ClothingSuitViewHolder holder, int position) {
-        Suit suit = suits.get(position);
+        final Suit suit = suits.get(position);
         holder.tvSuitOrder.setText(position + 1 + "");
         holder.tvSuitName.setText(suit.getSuitName());
         holder.tvSuitCreateTime.setText(TimeUtils.format(suit.getSuitCreateTime()));
         holder.tvPreset.setVisibility(suit.getSuitPreset() ? View.VISIBLE : View.GONE);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onItemClick(suit);
+                }
+            }
+        });
     }
 
     @Override
@@ -79,6 +86,6 @@ public class ClothingSuitAdapter extends RecyclerView.Adapter<ClothingSuitAdapte
     }
 
     public interface OnItemClickListener {
-        void onItemClick(Clothing clothing);
+        void onItemClick(Suit suit);
     }
 }

@@ -1,8 +1,5 @@
 package com.example.wardrobeassistant.activity;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -34,11 +31,14 @@ public class ClothingDetailsActivity extends BaseActivity {
     private TextView tvLastChangeTime;
     private QMUIButton btnSubmit;
 
+    private boolean justShow;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clothing_details);
         clothing = getIntent().getParcelableExtra("clothing");
+        justShow = getIntent().getBooleanExtra("justShow", true);
         initView();
         initTopBar();
         initListener();
@@ -66,8 +66,12 @@ public class ClothingDetailsActivity extends BaseActivity {
         tvClothingInputTime.setText(TimeUtils.format(clothing.getClothingInputTime()));
         tvLastChangeTimeTitle.setText(clothing.getIsTakeOut() ? "上次取出时间" : "上次放入时间");
         tvLastChangeTime.setText(TimeUtils.format(clothing.getClothingLocationChangeTime()));
-
-        btnSubmit.setText(clothing.getIsTakeOut() ? "放入" : "取出");
+        if (justShow) {
+            btnSubmit.setVisibility(View.GONE);
+        } else {
+            btnSubmit.setVisibility(View.VISIBLE);
+            btnSubmit.setText(clothing.getIsTakeOut() ? "放入" : "取出");
+        }
     }
 
     private void initTopBar() {

@@ -90,6 +90,7 @@ public class MyClothingListActivity extends BaseActivity implements ClothingClas
             public void onItemClick(Clothing clothing) {
                 Intent intent = new Intent(MyClothingListActivity.this, ClothingDetailsActivity.class);
                 intent.putExtra("clothing", clothing);
+                intent.putExtra("justShow", false);
                 startActivityForResult(intent, CLOTHING_DETAILS_REQUEST);
             }
         });

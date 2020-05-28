@@ -13,11 +13,11 @@ import com.example.wardrobeassistant.adapter.ClothingSuitAdapter;
 import com.example.wardrobeassistant.db.DbManager;
 import com.example.wardrobeassistant.db.entity.Suit;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
-import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
 
 import java.util.List;
 
-public class PresetClothingSuitActivity extends BaseActivity {
+public class PresetClothingSuitListActivity extends BaseActivity {
+    private static final int SUIT_ADD_REQUEST = 1000;
     private QMUITopBarLayout topBar;
     private RecyclerView suitList;
     private ClothingSuitAdapter clothingSuitAdapter;
@@ -29,6 +29,11 @@ public class PresetClothingSuitActivity extends BaseActivity {
         initView();
         initTopBar();
         initSuitList();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         loadData();
     }
 
@@ -48,7 +53,7 @@ public class PresetClothingSuitActivity extends BaseActivity {
         topBar.addRightTextButton("添加", R.id.clothing_suit_add).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(PresetClothingSuitActivity.this, ClothingSuitAddActivity.class));
+                startActivityForResult(new Intent(PresetClothingSuitListActivity.this, ClothingSuitAddActivity.class), SUIT_ADD_REQUEST);
             }
         });
     }
@@ -57,6 +62,14 @@ public class PresetClothingSuitActivity extends BaseActivity {
         suitList.setLayoutManager(new LinearLayoutManager(this));
         clothingSuitAdapter = new ClothingSuitAdapter();
         suitList.setAdapter(clothingSuitAdapter);
+        clothingSuitAdapter.setOnItemClickListener(new ClothingSuitAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Suit suit) {
+                Intent intent = new Intent(PresetClothingSuitListActivity.this, SuitDetailsActivity.class);
+                intent.putExtra("suit", suit);
+                startActivity(intent);
+            }
+        });
     }
 
 
@@ -64,5 +77,13 @@ public class PresetClothingSuitActivity extends BaseActivity {
         List<Suit> suits = DbManager.getInstance().getSession().getSuitDao().loadAll();
         clothingSuitAdapter.clear();
         clothingSuitAdapter.addAll(suits);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == SUIT_ADD_REQUEST && resultCode == -1) {
+            loadData();
+        }
     }
 }

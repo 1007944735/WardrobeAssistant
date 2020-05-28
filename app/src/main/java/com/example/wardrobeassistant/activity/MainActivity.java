@@ -2,7 +2,6 @@ package com.example.wardrobeassistant.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -52,7 +51,7 @@ public class MainActivity extends BaseActivity implements GetWeatherTask.GetWeat
         cvSuit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,PresetClothingSuitActivity.class));
+                startActivity(new Intent(MainActivity.this, PresetClothingSuitListActivity.class));
             }
         });
 

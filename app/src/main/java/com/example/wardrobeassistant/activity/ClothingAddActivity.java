@@ -164,20 +164,20 @@ public class ClothingAddActivity extends BaseActivity implements TakePhoto.TakeR
                 final long id = DbManager.getInstance().getSession().getClothingDao().insert(clothing);
 
                 final QMUITipDialog tipDialog = new QMUITipDialog.Builder(ClothingAddActivity.this)
-                        .setIconType(QMUITipDialog.Builder.ICON_TYPE_SUCCESS)
+                        .setIconType(id > 0 ? QMUITipDialog.Builder.ICON_TYPE_SUCCESS : QMUITipDialog.Builder.ICON_TYPE_FAIL)
                         .setTipWord(id > 0 ? "添加成功" : "添加失败")
                         .create();
                 tipDialog.show();
-                topBar.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        tipDialog.dismiss();
-                        if (id > 0) {
+                if (id > 0) {
+                    topBar.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            tipDialog.dismiss();
                             setResult(-1);
                             finish();
                         }
-                    }
-                }, 1000);
+                    }, 1000);
+                }
             }
         });
     }

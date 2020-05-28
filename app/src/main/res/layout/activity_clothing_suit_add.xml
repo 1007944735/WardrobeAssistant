@@ -29,7 +29,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="#ff0000"
+                android:background="@drawable/bg_suit_overcoat_stroke"
                 app:qmui_corner_radius="4dp" />
 
             <View
@@ -42,7 +42,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="#ff0000"
+                android:background="@drawable/bg_suit_outerwear_stroke"
                 app:qmui_corner_radius="4dp" />
         </LinearLayout>
 
@@ -61,7 +61,7 @@
                 android:id="@+id/iv_trousers"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#ff0000"
+                android:background="@drawable/bg_suit_trousers_stroke"
                 app:qmui_corner_radius="4dp" />
         </LinearLayout>
 
@@ -81,7 +81,7 @@
                 android:id="@+id/iv_shoes"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#ff0000"
+                android:background="@drawable/bg_suit_shoes_stroke"
                 app:qmui_corner_radius="4dp" />
         </LinearLayout>
     </LinearLayout>

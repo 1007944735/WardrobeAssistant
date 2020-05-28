@@ -3,4 +3,5 @@
     <item name="clothing_add" type="id" />
     <item name="clothing_add_finish" type="id" />
     <item name="clothing_suit_add" type="id" />
+    <item name="suit_preset" type="id" />
 </resources>
