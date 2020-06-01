@@ -6,17 +6,15 @@ import android.os.Parcelable;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.ToOne;
-
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.DaoException;
-
-import com.example.wardrobeassistant.db.ClothingDao;
 import com.example.wardrobeassistant.db.DaoSession;
+import com.example.wardrobeassistant.db.ClothingDao;
 import com.example.wardrobeassistant.db.SuitDao;
 
 //套装
 @Entity
-public class Suit implements Parcelable {
+public class Suit implements Parcelable{
     @Id(autoincrement = true)
     private Long id;
     //名称
@@ -41,6 +39,11 @@ public class Suit implements Parcelable {
     private boolean suitPreset;
     //创建时间
     private Long suitCreateTime;
+    //套装标签
+    private String suitTag;
+    //套装是否取出
+    private Boolean isTakeOut;
+
     /**
      * Used to resolve relations
      */
@@ -52,10 +55,10 @@ public class Suit implements Parcelable {
     @Generated(hash = 904619652)
     private transient SuitDao myDao;
 
-    @Generated(hash = 1358357769)
+    @Generated(hash = 839977458)
     public Suit(Long id, String suitName, Long suitOvercoatId, Long suitOuterwearId,
-                Long suitTrousersId, Long suitShoesId, boolean suitPreset,
-                Long suitCreateTime) {
+            Long suitTrousersId, Long suitShoesId, boolean suitPreset, Long suitCreateTime,
+            String suitTag, Boolean isTakeOut) {
         this.id = id;
         this.suitName = suitName;
         this.suitOvercoatId = suitOvercoatId;
@@ -64,6 +67,8 @@ public class Suit implements Parcelable {
         this.suitShoesId = suitShoesId;
         this.suitPreset = suitPreset;
         this.suitCreateTime = suitCreateTime;
+        this.suitTag = suitTag;
+        this.isTakeOut = isTakeOut;
     }
 
     @Generated(hash = 1012954962)
@@ -107,6 +112,9 @@ public class Suit implements Parcelable {
         } else {
             suitCreateTime = in.readLong();
         }
+        suitTag = in.readString();
+        byte tmpIsTakeOut = in.readByte();
+        isTakeOut = tmpIsTakeOut == 0 ? null : tmpIsTakeOut == 1;
     }
 
     public static final Creator<Suit> CREATOR = new Creator<Suit>() {
@@ -393,7 +401,24 @@ public class Suit implements Parcelable {
                 ", suitShoes=" + suitShoes.toString() +
                 ", suitPreset=" + suitPreset +
                 ", suitCreateTime=" + suitCreateTime +
+                ", isTakeOut=" + isTakeOut +
                 '}';
+    }
+
+    public String getSuitTag() {
+        return this.suitTag;
+    }
+
+    public void setSuitTag(String suitTag) {
+        this.suitTag = suitTag;
+    }
+
+    public Boolean getIsTakeOut() {
+        return this.isTakeOut;
+    }
+
+    public void setIsTakeOut(Boolean isTakeOut) {
+        this.isTakeOut = isTakeOut;
     }
 
     @Override
@@ -445,5 +470,7 @@ public class Suit implements Parcelable {
             dest.writeByte((byte) 1);
             dest.writeLong(suitCreateTime);
         }
+        dest.writeString(suitTag);
+        dest.writeByte((byte) (isTakeOut == null ? 0 : isTakeOut ? 1 : 2));
     }
 }

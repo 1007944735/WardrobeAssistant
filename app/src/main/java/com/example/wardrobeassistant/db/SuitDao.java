@@ -37,6 +37,8 @@ public class SuitDao extends AbstractDao<Suit, Long> {
         public final static Property SuitShoesId = new Property(5, Long.class, "suitShoesId", false, "SUIT_SHOES_ID");
         public final static Property SuitPreset = new Property(6, boolean.class, "suitPreset", false, "SUIT_PRESET");
         public final static Property SuitCreateTime = new Property(7, Long.class, "suitCreateTime", false, "SUIT_CREATE_TIME");
+        public final static Property SuitTag = new Property(8, String.class, "suitTag", false, "SUIT_TAG");
+        public final static Property IsTakeOut = new Property(9, Boolean.class, "isTakeOut", false, "IS_TAKE_OUT");
     }
 
     private DaoSession daoSession;
@@ -62,7 +64,9 @@ public class SuitDao extends AbstractDao<Suit, Long> {
                 "\"SUIT_TROUSERS_ID\" INTEGER," + // 4: suitTrousersId
                 "\"SUIT_SHOES_ID\" INTEGER," + // 5: suitShoesId
                 "\"SUIT_PRESET\" INTEGER NOT NULL ," + // 6: suitPreset
-                "\"SUIT_CREATE_TIME\" INTEGER);"); // 7: suitCreateTime
+                "\"SUIT_CREATE_TIME\" INTEGER," + // 7: suitCreateTime
+                "\"SUIT_TAG\" TEXT," + // 8: suitTag
+                "\"IS_TAKE_OUT\" INTEGER);"); // 9: isTakeOut
     }
 
     /** Drops the underlying database table. */
@@ -110,6 +114,16 @@ public class SuitDao extends AbstractDao<Suit, Long> {
         if (suitCreateTime != null) {
             stmt.bindLong(8, suitCreateTime);
         }
+ 
+        String suitTag = entity.getSuitTag();
+        if (suitTag != null) {
+            stmt.bindString(9, suitTag);
+        }
+ 
+        Boolean isTakeOut = entity.getIsTakeOut();
+        if (isTakeOut != null) {
+            stmt.bindLong(10, isTakeOut ? 1L: 0L);
+        }
     }
 
     @Override
@@ -151,6 +165,16 @@ public class SuitDao extends AbstractDao<Suit, Long> {
         if (suitCreateTime != null) {
             stmt.bindLong(8, suitCreateTime);
         }
+ 
+        String suitTag = entity.getSuitTag();
+        if (suitTag != null) {
+            stmt.bindString(9, suitTag);
+        }
+ 
+        Boolean isTakeOut = entity.getIsTakeOut();
+        if (isTakeOut != null) {
+            stmt.bindLong(10, isTakeOut ? 1L: 0L);
+        }
     }
 
     @Override
@@ -174,7 +198,9 @@ public class SuitDao extends AbstractDao<Suit, Long> {
             cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4), // suitTrousersId
             cursor.isNull(offset + 5) ? null : cursor.getLong(offset + 5), // suitShoesId
             cursor.getShort(offset + 6) != 0, // suitPreset
-            cursor.isNull(offset + 7) ? null : cursor.getLong(offset + 7) // suitCreateTime
+            cursor.isNull(offset + 7) ? null : cursor.getLong(offset + 7), // suitCreateTime
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // suitTag
+            cursor.isNull(offset + 9) ? null : cursor.getShort(offset + 9) != 0 // isTakeOut
         );
         return entity;
     }
@@ -189,6 +215,8 @@ public class SuitDao extends AbstractDao<Suit, Long> {
         entity.setSuitShoesId(cursor.isNull(offset + 5) ? null : cursor.getLong(offset + 5));
         entity.setSuitPreset(cursor.getShort(offset + 6) != 0);
         entity.setSuitCreateTime(cursor.isNull(offset + 7) ? null : cursor.getLong(offset + 7));
+        entity.setSuitTag(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setIsTakeOut(cursor.isNull(offset + 9) ? null : cursor.getShort(offset + 9) != 0);
      }
     
     @Override

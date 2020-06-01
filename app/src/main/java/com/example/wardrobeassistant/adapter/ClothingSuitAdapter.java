@@ -61,6 +61,15 @@ public class ClothingSuitAdapter extends RecyclerView.Adapter<ClothingSuitAdapte
                 }
             }
         });
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (listener != null) {
+                    listener.onLongItemClick(suit);
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -87,5 +96,7 @@ public class ClothingSuitAdapter extends RecyclerView.Adapter<ClothingSuitAdapte
 
     public interface OnItemClickListener {
         void onItemClick(Suit suit);
+
+        void onLongItemClick(Suit suit);
     }
 }

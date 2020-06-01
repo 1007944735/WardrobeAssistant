@@ -12,18 +12,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.wardrobeassistant.R;
-import com.example.wardrobeassistant.activity.ClothingDetailsActivity;
 import com.example.wardrobeassistant.db.entity.Clothing;
+import com.example.wardrobeassistant.util.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClothingClassifyDetailsAdapter extends RecyclerView.Adapter<ClothingClassifyDetailsAdapter.ClothingClassifyDetailViewHolder> {
+public class ClothingClassifyFotgetAdapter extends RecyclerView.Adapter<ClothingClassifyFotgetAdapter.ClothingClassifyDetailViewHolder> {
     private List<Clothing> clothings;
     private Context mContext;
     private OnItemClickListener listener;
 
-    public ClothingClassifyDetailsAdapter(Context context) {
+    public ClothingClassifyFotgetAdapter(Context context) {
         clothings = new ArrayList<>();
         this.mContext = context;
     }
@@ -48,13 +48,14 @@ public class ClothingClassifyDetailsAdapter extends RecyclerView.Adapter<Clothin
     @NonNull
     @Override
     public ClothingClassifyDetailViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ClothingClassifyDetailViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_clothing_classify_detail, parent, false));
+        return new ClothingClassifyDetailViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_clothing_classify_forget, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull ClothingClassifyDetailViewHolder holder, int position) {
         final Clothing clothing = clothings.get(position);
         holder.tvClothingName.setText(clothing.getClothingName());
+        holder.tvClothingTime.setText("距上次查看已有"+ TimeUtils.differentDays(clothing.getClothingViewTime()) +"天");
         Glide.with(mContext).load(clothing.getClothingImageUrl()).into(holder.ivClothingImage);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,17 +65,6 @@ public class ClothingClassifyDetailsAdapter extends RecyclerView.Adapter<Clothin
                 }
             }
         });
-
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                if (listener != null) {
-                    listener.onLongItemClick(clothing);
-                }
-                return false;
-            }
-        });
-
     }
 
     @Override
@@ -85,6 +75,7 @@ public class ClothingClassifyDetailsAdapter extends RecyclerView.Adapter<Clothin
     class ClothingClassifyDetailViewHolder extends RecyclerView.ViewHolder {
         ImageView ivClothingImage;
         TextView tvClothingName;
+        TextView tvClothingTime;
         View itemView;
 
         public ClothingClassifyDetailViewHolder(@NonNull View itemView) {
@@ -92,12 +83,11 @@ public class ClothingClassifyDetailsAdapter extends RecyclerView.Adapter<Clothin
             this.itemView = itemView;
             ivClothingImage = itemView.findViewById(R.id.iv_clothing_image);
             tvClothingName = itemView.findViewById(R.id.tv_clothing_name);
+            tvClothingTime = itemView.findViewById(R.id.tv_clothing_time);
         }
     }
 
     public interface OnItemClickListener {
         void onItemClick(Clothing clothing);
-
-        void onLongItemClick(Clothing clothing);
     }
 }

@@ -2,8 +2,10 @@ package com.example.wardrobeassistant.activity;
 
 import android.os.Bundle;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,7 +21,6 @@ import com.example.wardrobeassistant.db.DbManager;
 import com.example.wardrobeassistant.db.entity.Clothing;
 import com.example.wardrobeassistant.db.entity.Suit;
 import com.example.wardrobeassistant.util.StringUtils;
-import com.qmuiteam.qmui.skin.QMUISkinManager;
 import com.qmuiteam.qmui.widget.QMUIRadiusImageView2;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
@@ -35,6 +36,13 @@ public class ClothingSuitAddActivity extends BaseActivity {
     private QMUIRadiusImageView2 ivOuterwear;
     private QMUIRadiusImageView2 ivTrousers;
     private QMUIRadiusImageView2 ivShoes;
+    private LinearLayout llSuitTag;
+    private TextView tvSuitTag;
+
+    private boolean isAddOvercoat = false;
+    private boolean isAddOuterwear = false;
+    private boolean isAddTrousers = false;
+    private boolean isAddShoes = false;
 
     private Suit suit;
 
@@ -54,6 +62,8 @@ public class ClothingSuitAddActivity extends BaseActivity {
         ivOuterwear = findViewById(R.id.iv_outerwear);
         ivTrousers = findViewById(R.id.iv_trousers);
         ivShoes = findViewById(R.id.iv_shoes);
+        llSuitTag = findViewById(R.id.ll_suit_tag);
+        tvSuitTag = findViewById(R.id.tv_suit_tag);
     }
 
     private void initTopBar() {
@@ -67,6 +77,29 @@ public class ClothingSuitAddActivity extends BaseActivity {
         topBar.addRightTextButton("完成", R.id.clothing_add_finish).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String tag = tvSuitTag.getText().toString();
+                if (TextUtils.isEmpty(tag)) {
+                    Toast.makeText(ClothingSuitAddActivity.this,"请添加套装标签",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (!isAddOvercoat){
+                    Toast.makeText(ClothingSuitAddActivity.this,"请添加外套",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (!isAddOuterwear){
+                    Toast.makeText(ClothingSuitAddActivity.this,"请添加上衣",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (!isAddTrousers){
+                    Toast.makeText(ClothingSuitAddActivity.this,"请添加裤子",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (!isAddShoes){
+                    Toast.makeText(ClothingSuitAddActivity.this,"请添加鞋子",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 showEditTextDialog();
             }
         });
@@ -81,6 +114,7 @@ public class ClothingSuitAddActivity extends BaseActivity {
                 showClothingSelectDialog("外套", clothing, new ClothingSelectedAdapter.OnItemClickListener() {
                     @Override
                     public void OnItemClick(Clothing clothing) {
+                        isAddOvercoat = true;
                         Glide.with(ClothingSuitAddActivity.this).load(clothing.getClothingImageUrl()).into(ivOvercoat);
                         suit.setSuitOvercoatId(clothing.getId());
                     }
@@ -94,6 +128,7 @@ public class ClothingSuitAddActivity extends BaseActivity {
                 showClothingSelectDialog("上衣", clothing, new ClothingSelectedAdapter.OnItemClickListener() {
                     @Override
                     public void OnItemClick(Clothing clothing) {
+                        isAddOuterwear = true;
                         Glide.with(ClothingSuitAddActivity.this).load(clothing.getClothingImageUrl()).into(ivOuterwear);
                         suit.setSuitOuterwearId(clothing.getId());
                     }
@@ -107,6 +142,7 @@ public class ClothingSuitAddActivity extends BaseActivity {
                 showClothingSelectDialog("裤子", clothing, new ClothingSelectedAdapter.OnItemClickListener() {
                     @Override
                     public void OnItemClick(Clothing clothing) {
+                        isAddTrousers = true;
                         Glide.with(ClothingSuitAddActivity.this).load(clothing.getClothingImageUrl()).into(ivTrousers);
                         suit.setSuitTrousersId(clothing.getId());
                     }
@@ -121,12 +157,28 @@ public class ClothingSuitAddActivity extends BaseActivity {
                 showClothingSelectDialog("鞋子", clothing, new ClothingSelectedAdapter.OnItemClickListener() {
                     @Override
                     public void OnItemClick(Clothing clothing) {
+                        isAddShoes = true;
                         Glide.with(ClothingSuitAddActivity.this).load(clothing.getClothingImageUrl()).into(ivShoes);
                         suit.setSuitShoesId(clothing.getId());
                     }
                 });
             }
         });
+
+        llSuitTag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSimpleBottomSheetList("套装标签", getResources().getStringArray(R.array.suitTag), new QMUIBottomSheet.BottomListSheetBuilder.OnSheetItemClickListener() {
+
+                    @Override
+                    public void onClick(QMUIBottomSheet dialog, View itemView, int position, String tag) {
+                        tvSuitTag.setText(tag);
+                        dialog.dismiss();
+                    }
+                });
+            }
+        });
+
     }
 
     private void showClothingSelectDialog(String title, List<Clothing> clothing, ClothingSelectedAdapter.OnItemClickListener listener) {
@@ -159,7 +211,10 @@ public class ClothingSuitAddActivity extends BaseActivity {
                     public void onClick(QMUIDialog dialog, int index) {
                         String text = builder.getEditText().getText().toString();
                         if (text != null && text.length() > 0) {
+                            String tag = StringUtils.suitTagToDb(tvSuitTag.getText().toString());
+                            suit.setSuitTag(tag);
                             suit.setSuitName(text);
+                            suit.setIsTakeOut(false);
                             suit.setSuitPreset(false);
                             suit.setSuitCreateTime(System.currentTimeMillis());
                             final long id = DbManager.getInstance().getSession().getSuitDao().insert(suit);
@@ -187,4 +242,16 @@ public class ClothingSuitAddActivity extends BaseActivity {
                 })
                 .create().show();
     }
+
+    private void showSimpleBottomSheetList(CharSequence title, String[] items, QMUIBottomSheet.BottomListSheetBuilder.OnSheetItemClickListener listener) {
+        QMUIBottomSheet.BottomListSheetBuilder builder = new QMUIBottomSheet.BottomListSheetBuilder(this);
+        builder.setGravityCenter(true)
+                .setTitle(title)
+                .setOnSheetItemClickListener(listener);
+        for (String item : items) {
+            builder.addItem(item);
+        }
+        builder.build().show();
+    }
+
 }

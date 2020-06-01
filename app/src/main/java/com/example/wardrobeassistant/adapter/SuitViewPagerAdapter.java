@@ -13,7 +13,6 @@ import androidx.annotation.NonNull;
 import com.bumptech.glide.Glide;
 import com.example.wardrobeassistant.R;
 import com.example.wardrobeassistant.activity.ClothingDetailsActivity;
-import com.example.wardrobeassistant.activity.MyClothingListActivity;
 import com.example.wardrobeassistant.db.entity.Suit;
 import com.qmuiteam.qmui.widget.QMUIPagerAdapter;
 import com.qmuiteam.qmui.widget.QMUIRadiusImageView2;

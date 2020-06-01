@@ -8,58 +8,21 @@
         android:id="@+id/topBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/ll_suit_tag"/>
+        android:fitsSystemWindows="true" />
 
     <LinearLayout
-        android:id="@+id/ll_suit_tag"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:padding="15dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/topBar"
-        app:layout_constraintBottom_toTopOf="@+id/ll_suit_details">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="套装标签"
-            android:textColor="#cdcdcd"
-            android:textSize="16sp" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <TextView
-            android:id="@+id/tv_suit_tag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:textSize="16sp" />
-
-        <ImageView
-            android:layout_width="14dp"
-            android:layout_height="28dp"
-            android:src="@mipmap/ico_right" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/ll_suit_details"
+        android:id="@+id/showSuitLL"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
         android:padding="5dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ll_suit_tag">
+        app:layout_constraintBottom_toTopOf="@+id/btn_submit"
+        app:layout_constraintTop_toBottomOf="@+id/topBar">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="3"
+            android:layout_weight="4"
             android:orientation="horizontal">
 
             <com.qmuiteam.qmui.widget.QMUIRadiusImageView2
@@ -84,15 +47,10 @@
                 app:qmui_corner_radius="4dp" />
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/colorShadow" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2"
+            android:layout_weight="3"
             android:orientation="horizontal">
 
             <com.qmuiteam.qmui.widget.QMUIRadiusImageView2
@@ -101,6 +59,12 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/bg_suit_trousers_stroke"
                 app:qmui_corner_radius="4dp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+
         </LinearLayout>
 
 
@@ -112,7 +76,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2"
+            android:layout_weight="3"
             android:orientation="horizontal">
 
             <com.qmuiteam.qmui.widget.QMUIRadiusImageView2
@@ -121,7 +85,20 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/bg_suit_shoes_stroke"
                 app:qmui_corner_radius="4dp" />
+
         </LinearLayout>
     </LinearLayout>
+
+    <com.qmuiteam.qmui.layout.QMUIButton
+        android:id="@+id/btn_submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#C4E2D8"
+        android:text="取出"
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/showSuitLL" />
+
 
 </com.qmuiteam.qmui.widget.QMUIWindowInsetLayout2>

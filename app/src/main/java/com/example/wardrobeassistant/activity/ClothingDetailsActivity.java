@@ -1,16 +1,24 @@
 package com.example.wardrobeassistant.activity;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 import com.example.wardrobeassistant.R;
 import com.example.wardrobeassistant.db.DbManager;
 import com.example.wardrobeassistant.db.entity.Clothing;
+import com.example.wardrobeassistant.socketmanage.MySocket;
+import com.example.wardrobeassistant.socketmanage.MySocketCallBack;
+import com.example.wardrobeassistant.util.CheckSocketConnect;
 import com.example.wardrobeassistant.util.StringUtils;
 import com.example.wardrobeassistant.util.TimeUtils;
 import com.qmuiteam.qmui.layout.QMUIButton;
@@ -33,6 +41,83 @@ public class ClothingDetailsActivity extends BaseActivity {
 
     private boolean justShow;
 
+    private String messageSocket;
+    private Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+            int type = msg.what;
+            switch (type){
+                case -1:
+                    break;
+                case 0:
+                    break;
+                case 1:
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
+
+    private MySocketCallBack callBack = new MySocketCallBack() {
+        @Override
+        public void socketConnectTimeOut() {
+            messageSocket = "超时";
+            changeView(-1);
+        }
+
+        @Override
+        public void socketConnectError(String errorMsg) {
+            messageSocket = errorMsg;
+            changeView(0);
+        }
+
+        @Override
+        public void socketConnectSucceed() {
+            messageSocket = "链接成功";
+            changeView(1);
+        }
+
+        @Override
+        public void sendMessageError(final String errorMsg, int type) {
+            if (type == 0){
+                messageSocket = "发送失败 = 数据包 = " + errorMsg;
+            }else{
+                messageSocket = "发送失败 = 心跳包 = " + errorMsg ;
+            }
+            changeView(0);
+        }
+
+        @Override
+        public void sendMessageSucceed(int type) {
+            if (type == 0){
+                messageSocket = "发送成功 = 数据包";
+            }else{
+                messageSocket = "发送成功 = 心跳包" ;
+            }
+            changeView(0);
+        }
+
+        @Override
+        public void receiveMessageSucceed(final String message) {
+            messageSocket = "接收成功 = "+ message;
+            changeView(0);
+        }
+
+        @Override
+        public void receiveMessagError(final String message) {
+            messageSocket = "接收失败 = "+ message;
+            changeView(0);
+        }
+
+        @Override
+        public void socketClose() {
+            messageSocket = "链接关闭";
+            changeView(-1);
+        }
+    };
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +126,9 @@ public class ClothingDetailsActivity extends BaseActivity {
         justShow = getIntent().getBooleanExtra("justShow", true);
         clothing.setClothingViewTime(System.currentTimeMillis());
         DbManager.getInstance().getSession().getClothingDao().update(clothing);
+
+        MySocket.getInstall().registerListener(callBack);
+
         initView();
         initTopBar();
         initListener();
@@ -91,6 +179,11 @@ public class ClothingDetailsActivity extends BaseActivity {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                boolean isExit = CheckSocketConnect.checkSocket(ClothingDetailsActivity.this);
+                if (isExit){
+                    return;
+                }
+                MySocket.getInstall().socketSendMessage(clothing.getClothingLocation());
                 boolean takeOut = clothing.getIsTakeOut();
                 clothing.setClothingLocationChangeTime(System.currentTimeMillis());
                 clothing.setIsTakeOut(!takeOut);
@@ -110,5 +203,18 @@ public class ClothingDetailsActivity extends BaseActivity {
                 }, 1000);
             }
         });
+    }
+
+    private void changeView(int type) {
+        //type -1  关闭 0正常传输 1 成功
+        Message msg = new Message();
+        msg.what = type;
+        mHandler.sendMessage(msg);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        MySocket.getInstall().unRegisterListener(callBack);
     }
 }

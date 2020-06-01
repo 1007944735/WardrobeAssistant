@@ -66,7 +66,7 @@ public class GetWeatherTask extends AsyncTask<Void,Void,String> {
     }
 
     public String getWeather() throws IOException {
-        URL url=new URL("https://www.tianqiapi.com/free/day?appid=99937974&appsecret=Hcvf8Xn4&city=杭州");
+        URL url=new URL("https://www.tianqiapi.com/free/day?appid=99937974&appsecret=Hcvf8Xn4&city=郑州");
         HttpURLConnection conn=(HttpURLConnection)url.openConnection();
         conn.setRequestMethod("GET");
         conn.setReadTimeout(30 * 1000);

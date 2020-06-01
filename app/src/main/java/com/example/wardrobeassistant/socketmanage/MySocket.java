@@ -117,7 +117,7 @@ public class MySocket {
 
                     timeOutCount = 0;
                     //发送心跳包，判断是否意外断开
-                    handler.post(runnable);
+//                    handler.post(runnable);
                     //接受数据的线程池一直开着
                     socketReceiveMessage();
                 } catch (SocketTimeoutException e) {
@@ -163,7 +163,7 @@ public class MySocket {
                 if (socket != null && socket.isConnected() && !socket.isClosed() && !socket.isOutputShutdown()) {
                     try {
                         String message = msg + "\r\n";
-                        outputStream.write(message.getBytes());
+                        outputStream.write(message.getBytes("GBK"));
                         outputStream.flush();
                         //数据发送成功
                         for (MySocketCallBack listener : callBacks) {
@@ -244,7 +244,7 @@ public class MySocket {
     private Runnable runnable = new Runnable() {
         @Override
         public void run() {
-            socketSendHeart();
+//            socketSendHeart();
             handler.postDelayed(runnable, 10 * 1000);
         }
     };
@@ -265,6 +265,10 @@ public class MySocket {
                         String message = jsonObject.toString() + "\r\n";
                         outputStream.write(message.getBytes());
                         outputStream.flush();
+                        //数据发送成功
+                        for (MySocketCallBack listener : callBacks) {
+                            listener.sendMessageSucceed(1);
+                        }
                     } catch (IOException e) {
                         e.printStackTrace();
                         timeOutCount++;

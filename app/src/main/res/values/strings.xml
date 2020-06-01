@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WardrobeAssistant</string>
+    <string name="app_name">衣橱</string>
 
     <string-array name="clothingClassify">
         <item>外套</item>
@@ -24,4 +24,14 @@
         <item>夏</item>
         <item>冬</item>
     </string-array>
+
+    <string-array name="suitTag">
+        <item>日常</item>
+        <item>工作</item>
+        <item>运动</item>
+        <item>春秋</item>
+        <item>夏</item>
+        <item>冬</item>
+    </string-array>
+
 </resources>

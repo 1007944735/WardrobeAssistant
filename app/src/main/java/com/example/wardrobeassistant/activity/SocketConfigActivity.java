@@ -157,24 +157,28 @@ public class SocketConfigActivity extends BaseActivity {
             public void onClick(View v) {
                 serverHost = serverHostEt.getText().toString().trim();
                 String port = serverPortEt.getText().toString();
-                if (!TextUtils.isEmpty(port)) {
-                    serverPort = Integer.valueOf(port);
-                }
-                if (TextUtils.isEmpty(serverHost)) {
-                    Toast.makeText(mContext,"IP地址不能为空",Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (serverPort == -1) {
-                    Toast.makeText(mContext,"端口不能为空",Toast.LENGTH_SHORT).show();
-                    return;
-                }
                 if(socket.isExits()){
-                    socket.setContext(mContext).setHost("192.168.116.2").setPort(8234).setTimeOut(3 * 1000).socketConnect();
+
+                    if (!TextUtils.isEmpty(port)) {
+                        serverPort = Integer.valueOf(port);
+                    }
+                    if (TextUtils.isEmpty(serverHost)) {
+                        Toast.makeText(mContext,"IP地址不能为空",Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if (serverPort == -1) {
+                        Toast.makeText(mContext,"端口不能为空",Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    socket.setContext(mContext)
+                            .setHost(serverHost)
+                            .setPort(Integer.valueOf(port))
+                            .setTimeOut(30 * 1000)
+                            .socketConnect();
                 }else {
                     socket.close(true);
                 }
-
-
             }
         });
 

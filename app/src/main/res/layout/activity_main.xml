@@ -133,6 +133,7 @@
                 android:orientation="horizontal">
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/cv_forget_clothing"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
@@ -148,7 +149,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="我的服装"
+                            android:text="遗忘提醒"
                             android:textColor="#333"
                             android:textSize="16sp"
                             android:textStyle="bold" />
@@ -162,6 +163,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/cv_suit_recommend"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
@@ -177,7 +179,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="预设套装"
+                            android:text="套装推荐"
                             android:textColor="#333"
                             android:textSize="16sp"
                             android:textStyle="bold" />

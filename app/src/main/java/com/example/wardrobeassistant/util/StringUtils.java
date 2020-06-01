@@ -138,4 +138,49 @@ public class StringUtils {
                 return "";
         }
     }
+    //将套装标签 中文转为英文
+    public static String suitTagToDb(String s) {
+        if (s == null || s.isEmpty()) {
+            return "";
+        }
+        switch (s) {
+            case Constant.CN_OCCASION_DAILY:
+                return Constant.OCCASION_DAILY;
+            case Constant.CN_OCCASION_WORK:
+                return Constant.OCCASION_WORK;
+            case Constant.CN_OCCASION_SPORT:
+                return Constant.OCCASION_SPORT;
+            case Constant.CN_WARMTH_LEVEL_SPRING_AUTUMN:
+                return Constant.WARMTH_LEVEL_SPRING_AUTUMN;
+            case Constant.CN_WARMTH_LEVEL_SUMMER:
+                return Constant.WARMTH_LEVEL_SUMMER;
+            case Constant.CN_WARMTH_LEVEL_WINTER:
+                return Constant.WARMTH_LEVEL_WINTER;
+            default:
+                return "";
+        }
+    }
+
+    //将套装标签 英文转成中文
+    public static String suitTagFromDb(String s) {
+        if (s == null || s.isEmpty()) {
+            return "";
+        }
+        switch (s) {
+            case Constant.OCCASION_DAILY:
+                return Constant.CN_OCCASION_DAILY;
+            case Constant.OCCASION_WORK:
+                return Constant.CN_OCCASION_WORK;
+            case Constant.OCCASION_SPORT:
+                return Constant.CN_OCCASION_SPORT;
+            case Constant.WARMTH_LEVEL_SPRING_AUTUMN:
+                return Constant.CN_WARMTH_LEVEL_SPRING_AUTUMN;
+            case Constant.WARMTH_LEVEL_SUMMER:
+                return Constant.CN_WARMTH_LEVEL_SUMMER;
+            case Constant.WARMTH_LEVEL_WINTER:
+                return Constant.CN_WARMTH_LEVEL_WINTER;
+            default:
+                return "";
+        }
+    }
 }
