@@ -6,6 +6,7 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,6 +15,7 @@ import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 import com.example.wardrobeassistant.R;
+import com.example.wardrobeassistant.db.ClothingDao;
 import com.example.wardrobeassistant.db.DbManager;
 import com.example.wardrobeassistant.db.entity.Clothing;
 import com.example.wardrobeassistant.socketmanage.MySocket;
@@ -23,7 +25,10 @@ import com.example.wardrobeassistant.util.StringUtils;
 import com.example.wardrobeassistant.util.TimeUtils;
 import com.qmuiteam.qmui.layout.QMUIButton;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
+import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
+
+import java.util.List;
 
 public class ClothingDetailsActivity extends BaseActivity {
     private Clothing clothing;
@@ -37,7 +42,10 @@ public class ClothingDetailsActivity extends BaseActivity {
     private TextView tvClothingInputTime;
     private TextView tvLastChangeTimeTitle;
     private TextView tvLastChangeTime;
+    private LinearLayout llWarmthLocation;
     private QMUIButton btnSubmit;
+
+    private String location;
 
     private boolean justShow;
 
@@ -146,21 +154,32 @@ public class ClothingDetailsActivity extends BaseActivity {
         tvLastChangeTimeTitle = findViewById(R.id.tv_last_change_time_title);
         tvLastChangeTime = findViewById(R.id.tv_last_change_time);
         btnSubmit = findViewById(R.id.btn_submit);
+        llWarmthLocation = findViewById(R.id.ll_warmth_location);
 
         Glide.with(this).load(clothing.getClothingImageUrl()).into(ivClothingImage);
         tvClothingColorSystem.setText(StringUtils.colorSystemFromDb(clothing.getClothingColorSystem()));
         tvClothingType.setText(StringUtils.clothingTypeFromDb(clothing.getClothingType()));
         tvClothingOccasion.setText(StringUtils.occasionFromDb(clothing.getClothingOccasion()));
         tvClothingWarmthLevel.setText(StringUtils.warmLevelFromDb(clothing.getClothingWarmthLevel()));
-        tvClothingLocation.setText(clothing.getClothingLocation());
         tvClothingInputTime.setText(TimeUtils.format(clothing.getClothingInputTime()));
         tvLastChangeTimeTitle.setText(clothing.getIsTakeOut() ? "上次取出时间" : "上次放入时间");
         tvLastChangeTime.setText(TimeUtils.format(clothing.getClothingLocationChangeTime()));
+
+        location = clothing.getClothingLocation();
+
+        if (location.isEmpty()){
+            tvClothingLocation.setHint("请选择存放位置");
+        }else {
+            tvClothingLocation.setText(StringUtils.clothLocatainFromDb(location));
+        }
+
         if (justShow) {
             btnSubmit.setVisibility(View.GONE);
+            llWarmthLocation.setEnabled(false);
         } else {
             btnSubmit.setVisibility(View.VISIBLE);
             btnSubmit.setText(clothing.getIsTakeOut() ? "放入" : "取出");
+            llWarmthLocation.setEnabled(true);
         }
     }
 
@@ -183,8 +202,22 @@ public class ClothingDetailsActivity extends BaseActivity {
                 if (isExit){
                     return;
                 }
-                MySocket.getInstall().socketSendMessage(clothing.getClothingLocation());
+
                 boolean takeOut = clothing.getIsTakeOut();
+
+                if (takeOut){
+                    location = tvClothingLocation.getText().toString();
+
+                    if (location.isEmpty()) {
+                        Toast.makeText(ClothingDetailsActivity.this, "请输入存放位置", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    clothing.setClothingLocation(StringUtils.clothLocatainToDb(location));
+                    MySocket.getInstall().socketSendMessage(clothing.getClothingLocation());
+                }else {
+                    MySocket.getInstall().socketSendMessage(clothing.getClothingLocation());
+                    clothing.setClothingLocation("");
+                }
                 clothing.setClothingLocationChangeTime(System.currentTimeMillis());
                 clothing.setIsTakeOut(!takeOut);
                 DbManager.getInstance().getSession().getClothingDao().update(clothing);
@@ -203,6 +236,25 @@ public class ClothingDetailsActivity extends BaseActivity {
                 }, 1000);
             }
         });
+
+        llWarmthLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showSimpleBottomSheetList("收纳位置", getResources().getStringArray(R.array.clothingLocation), new QMUIBottomSheet.BottomListSheetBuilder.OnSheetItemClickListener() {
+
+                    @Override
+                    public void onClick(QMUIBottomSheet dialog, View itemView, int position, String tag) {
+                        List<Clothing> clothList = DbManager.getInstance().getSession().getClothingDao().queryBuilder().where(ClothingDao.Properties.ClothingLocation.eq(StringUtils.clothLocatainToDb(tag))).list();
+                        if (clothList == null || clothList.size() <1){
+                            tvClothingLocation.setText(tag);
+                            dialog.dismiss();
+                        }else {
+                            Toast.makeText(ClothingDetailsActivity.this, "当前位置已有衣物，请重新选择", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+        });
     }
 
     private void changeView(int type) {
@@ -216,5 +268,16 @@ public class ClothingDetailsActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         MySocket.getInstall().unRegisterListener(callBack);
+    }
+
+    private void showSimpleBottomSheetList(CharSequence title, String[] items, QMUIBottomSheet.BottomListSheetBuilder.OnSheetItemClickListener listener) {
+        QMUIBottomSheet.BottomListSheetBuilder builder = new QMUIBottomSheet.BottomListSheetBuilder(this);
+        builder.setGravityCenter(true)
+                .setTitle(title)
+                .setOnSheetItemClickListener(listener);
+        for (String item : items) {
+            builder.addItem(item);
+        }
+        builder.build().show();
     }
 }

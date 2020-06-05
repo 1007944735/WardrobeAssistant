@@ -25,10 +25,6 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-/**
- * Created by zjn on 2017/12/26.
- */
-
 public class MySocket {
     private Context context;
     private String host;
@@ -162,8 +158,8 @@ public class MySocket {
             public void run() {
                 if (socket != null && socket.isConnected() && !socket.isClosed() && !socket.isOutputShutdown()) {
                     try {
-                        String message = msg + "\r\n";
-                        outputStream.write(message.getBytes("GBK"));
+                        String message ="pinn=" + msg + "\r\n";
+                        outputStream.write(message.getBytes());
                         outputStream.flush();
                         //数据发送成功
                         for (MySocketCallBack listener : callBacks) {

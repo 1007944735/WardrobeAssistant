@@ -34,4 +34,14 @@
         <item>冬</item>
     </string-array>
 
+    <string-array name="clothingLocation">
+        <item>挂衣区一</item>
+        <item>挂衣区二</item>
+        <item>挂衣区三</item>
+        <item>收纳区一</item>
+        <item>收纳区二</item>
+        <item>收纳区三</item>
+        <item>收纳区四</item>
+    </string-array>
+
 </resources>

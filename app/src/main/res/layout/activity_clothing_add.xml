@@ -202,6 +202,7 @@
                 android:background="@color/colorShadow" />
 
             <LinearLayout
+                android:id="@+id/ll_warmth_location"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:gravity="center_vertical"
@@ -213,17 +214,23 @@
                     android:text="存放位置"
                     android:textColor="#cdcdcd"
                     android:textSize="16sp" />
-
-                <EditText
-                    android:id="@+id/et_clothing_location"
+                <View
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/tv_clothing_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:gravity="right|center"
-                    android:hint="请输入"
                     android:textSize="16sp" />
+
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="28dp"
+                    android:src="@mipmap/ico_right" />
+
             </LinearLayout>
 
             <View

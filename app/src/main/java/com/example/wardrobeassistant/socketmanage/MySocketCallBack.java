@@ -1,9 +1,5 @@
 package com.example.wardrobeassistant.socketmanage;
 
-/**
- * Created by zjn on 2017/12/26.
- */
-
 public interface MySocketCallBack {
 
     void socketConnectTimeOut();//链接超时

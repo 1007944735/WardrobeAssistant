@@ -32,4 +32,20 @@ public interface Constant {
     String CN_WARMTH_LEVEL_SUMMER = "夏";
     String WARMTH_LEVEL_WINTER = "winter";
     String CN_WARMTH_LEVEL_WINTER = "冬";
+
+    //位置信息
+    String LOCATION_HANGING_CLOTHES_ONE = "pin10";
+    String CN_LOCATION_HANGING_CLOTHES_ONE = "挂衣区一";
+    String LOCATION_HANGING_CLOTHES_TWO = "pin9";
+    String CN_LOCATION_HANGING_CLOTHES_TWO = "挂衣区二";
+    String LOCATION_HANGING_CLOTHES_THREE = "pin8";
+    String CN_LOCATION_HANGING_CLOTHES_THREE = "挂衣区三";
+    String LOCATION_STORAGE_CLOTHES_ONE = "pin7";
+    String CN_LOCATION_STORAGE_CLOTHES_ONE = "收纳区一";
+    String LOCATION_STORAGE_CLOTHES_TWO = "pin6";
+    String CN_LOCATION_STORAGE_CLOTHES_TWO = "收纳区二";
+    String LOCATION_STORAGE_CLOTHES_THREE = "pin5";
+    String CN_LOCATION_STORAGE_CLOTHES_THREE = "收纳区三";
+    String LOCATION_STORAGE_CLOTHES_FOUR = "pin4";
+    String CN_LOCATION_STORAGE_CLOTHES_FOUR = "收纳区四";
 }

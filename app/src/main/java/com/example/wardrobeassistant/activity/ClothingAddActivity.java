@@ -18,6 +18,7 @@ import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 import com.example.wardrobeassistant.R;
+import com.example.wardrobeassistant.db.ClothingDao;
 import com.example.wardrobeassistant.db.DbManager;
 import com.example.wardrobeassistant.db.entity.Clothing;
 import com.example.wardrobeassistant.util.StringUtils;
@@ -36,6 +37,7 @@ import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheetBaseBuilder;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 
 import java.io.File;
+import java.util.List;
 
 public class ClothingAddActivity extends BaseActivity implements TakePhoto.TakeResultListener, InvokeListener {
     private QMUITopBarLayout topBar;
@@ -48,9 +50,9 @@ public class ClothingAddActivity extends BaseActivity implements TakePhoto.TakeR
     private TextView tvClothingOccasion;
     private LinearLayout llWarmthLevel;
     private TextView tvClothingWarmthLevel;
-    private EditText etClothingLocation;
+    private TextView tvClothingLocation;
     private ImageView ivClothingImage;
-
+    private LinearLayout llWarmthLocation;
 
     private TakePhoto takePhoto;
     private InvokeParam invokeParam;
@@ -99,8 +101,9 @@ public class ClothingAddActivity extends BaseActivity implements TakePhoto.TakeR
         tvClothingOccasion = findViewById(R.id.tv_clothing_occasion);
         llWarmthLevel = findViewById(R.id.ll_warmth_level);
         tvClothingWarmthLevel = findViewById(R.id.tv_clothing_warmth_level);
-        etClothingLocation = findViewById(R.id.et_clothing_location);
+        tvClothingLocation = findViewById(R.id.tv_clothing_location);
         ivClothingImage = findViewById(R.id.iv_clothing_image);
+        llWarmthLocation = findViewById(R.id.ll_warmth_location);
     }
 
     private void initTopBar() {
@@ -119,7 +122,7 @@ public class ClothingAddActivity extends BaseActivity implements TakePhoto.TakeR
                 String type = tvClothingType.getText().toString();
                 String occasion = tvClothingOccasion.getText().toString();
                 String warmthLevel = tvClothingWarmthLevel.getText().toString();
-                String location = etClothingLocation.getText().toString();
+                String location = tvClothingLocation.getText().toString();
 
                 if (name.isEmpty()) {
                     Toast.makeText(ClothingAddActivity.this, "请输入服装名称", Toast.LENGTH_SHORT).show();
@@ -142,7 +145,7 @@ public class ClothingAddActivity extends BaseActivity implements TakePhoto.TakeR
                     return;
                 }
                 if (location.isEmpty()) {
-                    Toast.makeText(ClothingAddActivity.this, "请输入存放位置", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClothingAddActivity.this, "请选择存放位置", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (clothing.getClothingImageUrl().isEmpty()) {
@@ -155,7 +158,7 @@ public class ClothingAddActivity extends BaseActivity implements TakePhoto.TakeR
                 clothing.setClothingType(StringUtils.clothingTypeToDb(type));
                 clothing.setClothingOccasion(StringUtils.occasionToDb(occasion));
                 clothing.setClothingWarmthLevel(StringUtils.warmLevelToDb(warmthLevel));
-                clothing.setClothingLocation(location);
+                clothing.setClothingLocation(StringUtils.clothLocatainToDb(location));
                 long timeMillis = System.currentTimeMillis();
                 clothing.setClothingInputTime(timeMillis);
                 clothing.setClothingLocationChangeTime(timeMillis);
@@ -220,6 +223,25 @@ public class ClothingAddActivity extends BaseActivity implements TakePhoto.TakeR
                     public void onClick(QMUIBottomSheet dialog, View itemView, int position, String tag) {
                         tvClothingOccasion.setText(tag);
                         dialog.dismiss();
+                    }
+                });
+            }
+        });
+
+        llWarmthLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showSimpleBottomSheetList("收纳位置", getResources().getStringArray(R.array.clothingLocation), new QMUIBottomSheet.BottomListSheetBuilder.OnSheetItemClickListener() {
+
+                    @Override
+                    public void onClick(QMUIBottomSheet dialog, View itemView, int position, String tag) {
+                        List<Clothing> clothList = DbManager.getInstance().getSession().getClothingDao().queryBuilder().where(ClothingDao.Properties.ClothingLocation.eq(StringUtils.clothLocatainToDb(tag))).list();
+                        if (clothList == null || clothList.size() <1){
+                            tvClothingLocation.setText(tag);
+                            dialog.dismiss();
+                        }else {
+                            Toast.makeText(ClothingAddActivity.this, "当前位置已有衣物，请重新选择", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
             }

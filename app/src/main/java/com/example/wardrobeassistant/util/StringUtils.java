@@ -183,4 +183,55 @@ public class StringUtils {
                 return "";
         }
     }
+
+    //将位置信息 中文转为英文
+    public static String clothLocatainToDb(String s) {
+        if (s == null || s.isEmpty()) {
+            return "";
+        }
+        switch (s) {
+            case Constant.CN_LOCATION_HANGING_CLOTHES_ONE:
+                return Constant.LOCATION_HANGING_CLOTHES_ONE;
+            case Constant.CN_LOCATION_HANGING_CLOTHES_TWO:
+                return Constant.LOCATION_HANGING_CLOTHES_TWO;
+            case Constant.CN_LOCATION_HANGING_CLOTHES_THREE:
+                return Constant.LOCATION_HANGING_CLOTHES_THREE;
+            case Constant.CN_LOCATION_STORAGE_CLOTHES_ONE:
+                return Constant.LOCATION_STORAGE_CLOTHES_ONE;
+            case Constant.CN_LOCATION_STORAGE_CLOTHES_TWO:
+                return Constant.LOCATION_STORAGE_CLOTHES_TWO;
+            case Constant.CN_LOCATION_STORAGE_CLOTHES_THREE:
+                return Constant.LOCATION_STORAGE_CLOTHES_THREE;
+            case Constant.CN_LOCATION_STORAGE_CLOTHES_FOUR:
+                return Constant.LOCATION_STORAGE_CLOTHES_FOUR;
+            default:
+                return "";
+        }
+    }
+
+    //将位置信息 英文转成中文
+    public static String clothLocatainFromDb(String s) {
+        if (s == null || s.isEmpty()) {
+            return "";
+        }
+        switch (s) {
+            case Constant.LOCATION_HANGING_CLOTHES_ONE:
+                return Constant.CN_LOCATION_HANGING_CLOTHES_ONE;
+            case Constant.LOCATION_HANGING_CLOTHES_TWO:
+                return Constant.CN_LOCATION_HANGING_CLOTHES_TWO;
+            case Constant.LOCATION_HANGING_CLOTHES_THREE:
+                return Constant.CN_LOCATION_HANGING_CLOTHES_THREE;
+            case Constant.LOCATION_STORAGE_CLOTHES_ONE:
+                return Constant.CN_LOCATION_STORAGE_CLOTHES_ONE;
+            case Constant.LOCATION_STORAGE_CLOTHES_TWO:
+                return Constant.CN_LOCATION_STORAGE_CLOTHES_TWO;
+            case Constant.LOCATION_STORAGE_CLOTHES_THREE:
+                return Constant.CN_LOCATION_STORAGE_CLOTHES_THREE;
+            case Constant.LOCATION_STORAGE_CLOTHES_FOUR:
+                return Constant.CN_LOCATION_STORAGE_CLOTHES_FOUR;
+            default:
+                return "";
+        }
+    }
+
 }
